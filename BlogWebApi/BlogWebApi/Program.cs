@@ -1,6 +1,11 @@
+using BlogWebApi.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AppEFContext>(opt =>
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresLocalConnection")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
