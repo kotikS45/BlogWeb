@@ -12,6 +12,8 @@ namespace BlogWebApi.Data
         public AppEFContext(DbContextOptions<AppEFContext> options) : base(options) { }
 
         public DbSet<CategoryEntity> Categories { get; set; }
+        public DbSet<PostEntity> Posts { get; set; }
+        public DbSet<TagEntity> Tags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
