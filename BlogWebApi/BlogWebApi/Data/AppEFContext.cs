@@ -14,10 +14,15 @@ namespace BlogWebApi.Data
         public DbSet<CategoryEntity> Categories { get; set; }
         public DbSet<PostEntity> Posts { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
+        public DbSet<PostTagEntity> PostTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<PostTagEntity>(ur =>
+            {
+                ur.HasKey(ur => new { ur.PostId, ur.TagId });
+            });
         }
     }
 }
