@@ -25,6 +25,6 @@ namespace BlogWebApi.Data.Entities
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public virtual CategoryEntity Category { get; set; }
-        public virtual ICollection<PostTagEntity> Posts { get; set; }
+        public virtual ICollection<PostTagEntity> Tags { get; set; }
     }
 }
