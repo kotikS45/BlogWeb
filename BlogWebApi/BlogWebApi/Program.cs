@@ -1,4 +1,6 @@
+using AutoMapper;
 using BlogWebApi.Data;
+using BlogWebApi.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors();
+builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new AppMapProfile(provider.GetService<AppEFContext>()));
+}).CreateMapper());
 
 var app = builder.Build();
 
