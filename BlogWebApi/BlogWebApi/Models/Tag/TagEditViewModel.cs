@@ -1,6 +1,6 @@
-﻿namespace BlogWebApi.Models.Category
+﻿namespace BlogWebApi.Models.Tag
 {
-    public class CategoryItemViewModel
+    public class TagEditViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

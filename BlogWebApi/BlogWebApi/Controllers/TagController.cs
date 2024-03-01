@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
-using BlogWebApi.Data;
 using BlogWebApi.Data.Entities;
+using BlogWebApi.Data;
 using BlogWebApi.Models.Category;
 using Microsoft.AspNetCore.Mvc;
+using BlogWebApi.Models.Tag;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogWebApi.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class TagController : ControllerBase
     {
         private readonly AppEFContext _appEFContext;
         private readonly IMapper _mapper;
 
-        public CategoryController(AppEFContext appEFContext, IMapper mapper)
+        public TagController(AppEFContext appEFContext, IMapper mapper)
         {
             _appEFContext = appEFContext;
             _mapper = mapper;
@@ -23,35 +24,35 @@ namespace BlogWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            var list = await _appEFContext.Categories
+            var list = await _appEFContext.Tags
                 .Where(c => !c.IsDeleted)
-                .Select(x => _mapper.Map<CategoryItemViewModel>(x))
+                .Select(x => _mapper.Map<TagItemViewModel>(x))
                 .ToListAsync();
             return Ok(list);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] CategoryCreateViewModel model)
+        public async Task<IActionResult> Create([FromForm] TagCreateViewModel model)
         {
-            var category = _mapper.Map<CategoryEntity>(model);
-            await _appEFContext.Categories.AddAsync(category);
+            var tag = _mapper.Map<TagEntity>(model);
+            await _appEFContext.Tags.AddAsync(tag);
             await _appEFContext.SaveChangesAsync();
             return Ok();
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] CategoryEditViewModel model)
+        public async Task<IActionResult> Update([FromForm] TagEditViewModel model)
         {
-            var category = _appEFContext.Categories
+            var tag = _appEFContext.Tags
                 .Where(c => !c.IsDeleted)
                 .SingleOrDefault(x => x.Id == model.Id);
-            if (category == null)
+            if (tag == null)
             {
                 return NotFound();
             }
-            category.Name = model.Name;
-            category.UrlSlug = model.UrlSlug;
-            category.Description = model.Description;
+            tag.Name = model.Name;
+            tag.UrlSlug = model.UrlSlug;
+            tag.Description = model.Description;
             await _appEFContext.SaveChangesAsync();
             return Ok();
         }
@@ -59,14 +60,14 @@ namespace BlogWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var category = _appEFContext.Categories
+            var tag = _appEFContext.Categories
                 .Where(c => !c.IsDeleted)
                 .SingleOrDefault(x => x.Id == id);
-            if (category == null)
+            if (tag == null)
             {
                 return NotFound();
             }
-            category.IsDeleted = true;
+            tag.IsDeleted = true;
             await _appEFContext.SaveChangesAsync();
             return Ok();
         }
@@ -74,14 +75,14 @@ namespace BlogWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var category = await _appEFContext.Categories
+            var tag = await _appEFContext.Tags
                 .Where(c => !c.IsDeleted)
                 .SingleOrDefaultAsync(x => x.Id == id);
-            if (category == null)
+            if (tag == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<CategoryItemViewModel>(category));
+            return Ok(_mapper.Map<CategoryItemViewModel>(tag));
         }
     }
 }

@@ -2,6 +2,7 @@
 using BlogWebApi.Data;
 using BlogWebApi.Data.Entities;
 using BlogWebApi.Models.Category;
+using BlogWebApi.Models.Tag;
 
 namespace BlogWebApi.Mapper
 {
@@ -14,6 +15,9 @@ namespace BlogWebApi.Mapper
 
             CreateMap<CategoryEntity, CategoryItemViewModel>();
             CreateMap<CategoryCreateViewModel, CategoryEntity>();
+
+            CreateMap<TagEntity, TagItemViewModel>();
+            CreateMap<TagCreateViewModel, TagEntity>();
         }
     }
 }
