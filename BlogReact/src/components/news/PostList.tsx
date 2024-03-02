@@ -3,7 +3,7 @@ import { IPostItem } from "../../interfaces/news";
 import { useEffect, useState } from "react";
 import { Card } from 'antd';
 
-const Home: React.FC = () => {
+const PostList: React.FC = () => {
   const [list, setList] = useState<IPostItem[]>([]);
 
   useEffect(() => {
@@ -27,16 +27,21 @@ const Home: React.FC = () => {
     };
 
     return date.toLocaleDateString('en-US', options);
-  };
+};
 
-  const content = list.map(x => (
+const content = list.map(x => (
     <Card key={x.id} title={x.title} bordered={false} style={{ marginTop: '22px', marginLeft: '20%', width: '50%' }}>
         <p>{x.shortDescription}</p>
+        <p>{x.description}</p>
+        <p>{x.meta}</p>
+        <p>{x.urlSlug}</p>
+        <p>{x.published}</p>
         <p>{x.postedOn ? dateToShortString(new Date(x.postedOn)) : 'No date available'}</p>
+        <p>{x.modified ? dateToShortString(new Date(x.modified)) : 'No date available'}</p>
         <p>{x.category.name}</p>
         <p>{x.tags.map(tag => tag.name).join(" ")}</p>
     </Card>
-  ));
+));
 
   return (
     <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
@@ -45,4 +50,4 @@ const Home: React.FC = () => {
   );
 }
 
-export default Home;
+export default PostList;
