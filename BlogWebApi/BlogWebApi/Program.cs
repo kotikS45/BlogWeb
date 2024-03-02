@@ -21,6 +21,8 @@ builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
 }).CreateMapper());
 
 var app = builder.Build();
+app.UseCors(options =>
+    options.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();

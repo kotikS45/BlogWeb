@@ -2,6 +2,7 @@
 using BlogWebApi.Data;
 using BlogWebApi.Data.Entities;
 using BlogWebApi.Models.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -78,6 +79,19 @@ namespace BlogWebApi.Controllers
             var category = await _appEFContext.Categories
                 .Where(c => !c.IsDeleted)
                 .SingleOrDefaultAsync(x => x.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<CategoryItemViewModel>(category));
+        }
+
+        [HttpGet("urlSlug/{urlSlug}")]
+        public async Task<IActionResult> GetByUrlSlug(string urlSlug)
+        {
+            var category = await _appEFContext.Categories
+                .Where(c => !c.IsDeleted)
+                .SingleOrDefaultAsync(x => x.UrlSlug == urlSlug);
             if (category == null)
             {
                 return NotFound();

@@ -85,5 +85,18 @@ namespace BlogWebApi.Controllers
             }
             return Ok(_mapper.Map<TagItemViewModel>(tag));
         }
+
+        [HttpGet("urlSlug/{urlSlug}")]
+        public async Task<IActionResult> GetByUrlSlug(string urlSlug)
+        {
+            var tag = await _appEFContext.Tags
+                .Where(c => !c.IsDeleted)
+                .SingleOrDefaultAsync(x => x.UrlSlug == urlSlug);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<TagItemViewModel>(tag));
+        }
     }
 }

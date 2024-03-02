@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlogWebApi.Models.Post;
 using BlogWebApi.Models.Tag;
+using Microsoft.Extensions.Hosting;
 
 namespace BlogWebApi.Controllers
 {
@@ -33,7 +34,7 @@ namespace BlogWebApi.Controllers
             foreach (var post in list)
                 mapedList.Add(_mapper.Map<PostItemViewModel>(post));
 
-            for (int i = 0; i <  list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 var category = _appEFContext.Categories.Where(x => x.Id == list[i].CategoryId).FirstOrDefault();
                 if (category != null)
@@ -59,10 +60,10 @@ namespace BlogWebApi.Controllers
 
             var post = _mapper.Map<PostEntity>(model);
             post.DateCreated = DateTime.UtcNow;
-            
+
             if (post.Published)
                 post.PostedOn = DateTime.UtcNow;
-            
+
             var category = _appEFContext.Categories.Where(x => x.Id == post.CategoryId).FirstOrDefault();
             if (category != null)
                 post.Category = category;
@@ -164,6 +165,85 @@ namespace BlogWebApi.Controllers
             }
 
             return Ok(post);
+        }
+
+        [HttpGet("category/{slugUrl}")]
+        public async Task<IActionResult> GetByCategory(string slugUrl)
+        {
+            var category = await _appEFContext.Categories
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UrlSlug == slugUrl)
+                .SingleOrDefaultAsync();
+            if (category == null)
+                return NotFound();
+
+            var list = await _appEFContext.Posts
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.CategoryId == category.Id)
+                .ToListAsync();
+
+            var mapedList = new List<PostItemViewModel>();
+            foreach (var post in list)
+                mapedList.Add(_mapper.Map<PostItemViewModel>(post));
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                mapedList[i].Category = _mapper.Map<CategoryItemViewModel>(category);
+                mapedList[i].Tags = new List<TagItemViewModel>();
+                var postTags = _appEFContext.PostTags.Where(x => x.PostId == mapedList[i].Id).ToList();
+                foreach (var postTag in postTags)
+                {
+                    var tag = _appEFContext.Tags.Where(x => x.Id == postTag.TagId).FirstOrDefault();
+                    if (tag != null)
+                        mapedList[i].Tags.Add(_mapper.Map<TagItemViewModel>(tag));
+                }
+            }
+            return Ok(mapedList);
+        }
+
+        [HttpGet("tag/{slug}")]
+        public async Task<IActionResult> GetByTag(string slug)
+        {
+            var tagFind = await _appEFContext.Tags
+                .Where(c => !c.IsDeleted)
+                .Where(c => c.UrlSlug == slug)
+                .SingleOrDefaultAsync();
+            if (tagFind == null)
+                return NotFound();
+
+            var list = await _appEFContext.PostTags
+                .Where(c => c.TagId == tagFind.Id)
+                .ToListAsync();
+
+            var posts = new List<PostEntity>();
+
+            foreach (var item in list)
+            {
+                var post = _appEFContext.Posts.Where(x => x.Id == item.PostId).Where(c => !c.IsDeleted).FirstOrDefault();
+                if (post != null)
+                    posts.Add(post);
+            }
+
+            var mapedList = new List<PostItemViewModel>();
+            foreach (var post in posts)
+                mapedList.Add(_mapper.Map<PostItemViewModel>(post));
+
+            for (int i = 0; i < posts.Count; i++)
+            {
+                var category = _appEFContext.Categories.Where(x => x.Id == posts[i].CategoryId).FirstOrDefault();
+                if (category != null)
+                    mapedList[i].Category = _mapper.Map<CategoryItemViewModel>(category);
+
+                mapedList[i].Tags = new List<TagItemViewModel>();
+                var postTags = _appEFContext.PostTags.Where(x => x.PostId == mapedList[i].Id).ToList();
+                foreach (var postTag in postTags)
+                {
+                    var tag = _appEFContext.Tags.Where(x => x.Id == postTag.TagId).FirstOrDefault();
+                    if (tag != null)
+                        mapedList[i].Tags.Add(_mapper.Map<TagItemViewModel>(tag));
+                }
+            }
+            return Ok(mapedList);
         }
     }
 }
