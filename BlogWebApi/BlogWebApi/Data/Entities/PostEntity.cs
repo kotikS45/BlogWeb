@@ -19,8 +19,9 @@ namespace BlogWebApi.Data.Entities
         public string Meta { get; set; }
         [Required, StringLength(255)]
         public string UrlSlug { get; set; }
+        [Required]
         public virtual bool Published { get; set; }
-        public virtual DateTime PostedOn { get; set; }
+        public virtual DateTime? PostedOn { get; set; }
         public virtual DateTime? Modified { get; set; }
         [ForeignKey("Category")]
         public int CategoryId { get; set; }

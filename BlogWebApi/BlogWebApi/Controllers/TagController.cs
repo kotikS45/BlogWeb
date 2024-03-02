@@ -35,6 +35,7 @@ namespace BlogWebApi.Controllers
         public async Task<IActionResult> Create([FromForm] TagCreateViewModel model)
         {
             var tag = _mapper.Map<TagEntity>(model);
+            tag.DateCreated = DateTime.UtcNow;
             await _appEFContext.Tags.AddAsync(tag);
             await _appEFContext.SaveChangesAsync();
             return Ok();
@@ -60,7 +61,7 @@ namespace BlogWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var tag = _appEFContext.Categories
+            var tag = _appEFContext.Tags
                 .Where(c => !c.IsDeleted)
                 .SingleOrDefault(x => x.Id == id);
             if (tag == null)
@@ -82,7 +83,7 @@ namespace BlogWebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<CategoryItemViewModel>(tag));
+            return Ok(_mapper.Map<TagItemViewModel>(tag));
         }
     }
 }

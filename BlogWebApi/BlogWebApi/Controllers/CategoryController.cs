@@ -34,6 +34,7 @@ namespace BlogWebApi.Controllers
         public async Task<IActionResult> Create([FromForm] CategoryCreateViewModel model)
         {
             var category = _mapper.Map<CategoryEntity>(model);
+            category.DateCreated = DateTime.UtcNow;
             await _appEFContext.Categories.AddAsync(category);
             await _appEFContext.SaveChangesAsync();
             return Ok();

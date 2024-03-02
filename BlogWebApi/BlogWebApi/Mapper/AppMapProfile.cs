@@ -2,6 +2,7 @@
 using BlogWebApi.Data;
 using BlogWebApi.Data.Entities;
 using BlogWebApi.Models.Category;
+using BlogWebApi.Models.Post;
 using BlogWebApi.Models.Tag;
 
 namespace BlogWebApi.Mapper
@@ -18,6 +19,13 @@ namespace BlogWebApi.Mapper
 
             CreateMap<TagEntity, TagItemViewModel>();
             CreateMap<TagCreateViewModel, TagEntity>();
+
+            CreateMap<PostEntity, PostItemViewModel>()
+                .ForMember(x => x.Tags, opt => opt.Ignore());
+            CreateMap<PostCreateViewModel, PostEntity>()
+                .ForMember(x => x.Tags, opt => opt.Ignore());
+            CreateMap<PostEditViewModel, PostEntity>()
+                .ForMember(x => x.Tags, opt => opt.Ignore());
         }
     }
 }

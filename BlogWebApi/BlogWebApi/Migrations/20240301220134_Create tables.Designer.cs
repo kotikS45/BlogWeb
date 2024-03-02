@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogWebApi.Migrations
 {
     [DbContext(typeof(AppEFContext))]
-    [Migration("20240229185214_initial tables")]
-    partial class initialtables
+    [Migration("20240301220134_Create tables")]
+    partial class Createtables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace BlogWebApi.Migrations
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("PostedOn")
+                    b.Property<DateTime?>("PostedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Published")
@@ -178,7 +178,7 @@ namespace BlogWebApi.Migrations
             modelBuilder.Entity("BlogWebApi.Data.Entities.PostTagEntity", b =>
                 {
                     b.HasOne("BlogWebApi.Data.Entities.PostEntity", "Post")
-                        .WithMany("Posts")
+                        .WithMany("Tags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -201,7 +201,7 @@ namespace BlogWebApi.Migrations
 
             modelBuilder.Entity("BlogWebApi.Data.Entities.PostEntity", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("BlogWebApi.Data.Entities.TagEntity", b =>

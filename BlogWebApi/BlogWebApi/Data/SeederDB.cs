@@ -56,9 +56,10 @@ namespace BlogWebApi.Data
                 }
                 if (!context.Posts.Any())
                 {
-                    var post = new List<PostEntity>
+                    var posts = new List<PostEntity>
                     {
                         new PostEntity {
+                            Id = 1,
                             Title = "Introduction to Entity Framework",
                             ShortDescription = "Learn the basics of Entity Framework",
                             Description = "Entity Framework is an ORM framework...",
@@ -66,12 +67,12 @@ namespace BlogWebApi.Data
                             UrlSlug = "introduction-to-ef",
                             Published = true,
                             PostedOn = DateTime.UtcNow,
-                            Category = context.Categories.First(),
                             DateCreated = DateTime.UtcNow,
-                            Modified = DateTime.UtcNow
+                            Category = context.Categories.First()
                         }
                     };
-                    context.Posts.AddRange(post);
+                    context.Posts.AddRange(posts);
+                    context.PostTags.AddRange(new PostTagEntity { PostId = 1, TagId = 1 }, new PostTagEntity { PostId = 1, TagId = 2 });
                     context.SaveChanges();
                 }
             }

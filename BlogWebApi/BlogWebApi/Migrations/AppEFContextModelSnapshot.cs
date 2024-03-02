@@ -85,7 +85,7 @@ namespace BlogWebApi.Migrations
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("PostedOn")
+                    b.Property<DateTime?>("PostedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("Published")
@@ -175,7 +175,7 @@ namespace BlogWebApi.Migrations
             modelBuilder.Entity("BlogWebApi.Data.Entities.PostTagEntity", b =>
                 {
                     b.HasOne("BlogWebApi.Data.Entities.PostEntity", "Post")
-                        .WithMany("Posts")
+                        .WithMany("Tags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -198,7 +198,7 @@ namespace BlogWebApi.Migrations
 
             modelBuilder.Entity("BlogWebApi.Data.Entities.PostEntity", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("BlogWebApi.Data.Entities.TagEntity", b =>

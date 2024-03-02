@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initialtables : Migration
+    public partial class Createtables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,7 +58,7 @@ namespace BlogWebApi.Migrations
                     Meta = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     UrlSlug = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     Published = table.Column<bool>(type: "boolean", nullable: false),
-                    PostedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PostedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
