@@ -13,7 +13,7 @@ namespace BlogWebApi.Data.Entities
         public string Title { get; set; }
         [Required, StringLength(255)]
         public string ShortDescription { get; set; }
-        [Required, StringLength(5000)]
+        [Required, StringLength(20000)]
         public string Description { get; set; }
         [Required, StringLength(255)]
         public string Meta { get; set; }

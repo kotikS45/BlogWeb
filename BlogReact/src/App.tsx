@@ -6,6 +6,7 @@ import CategoryList from './components/categories/CategoryList';
 import PostList from './components/news/PostList';
 import CategoryItem from './components/categories/CategoryItem';
 import TagItem from './components/tags/TagItem';
+import PostItem from './components/news/PostItem';
 
 const App: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         <Route path='tags/:urlSlug' element={<TagItem/>}/>
         <Route path="news" >
           <Route index element={<PostList />} />
+          <Route path='post/:urlSlug' element={<PostItem />} />
         </Route>
       </Route>
     </Routes>

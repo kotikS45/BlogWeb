@@ -139,6 +139,34 @@ namespace BlogWebApi.Controllers
             return Ok();
         }
 
+        [HttpGet("urlSlug/{urlSlug}")]
+        public async Task<IActionResult> GetById(string urlSlug)
+        {
+            var item = await _appEFContext.Posts
+                .Where(c => !c.IsDeleted)
+                .SingleOrDefaultAsync(x => x.UrlSlug == urlSlug);
+            if (item == null)
+                return NotFound();
+
+            var post = _mapper.Map<PostItemViewModel>(item);
+
+
+            var category = _appEFContext.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault();
+            if (category != null)
+                post.Category = _mapper.Map<CategoryItemViewModel>(category);
+
+            post.Tags = new List<TagItemViewModel>();
+            var postTags = _appEFContext.PostTags.Where(x => x.PostId == post.Id).ToList();
+            foreach (var postTag in postTags)
+            {
+                var tag = _appEFContext.Tags.Where(x => x.Id == postTag.TagId).FirstOrDefault();
+                if (tag != null)
+                    post.Tags.Add(_mapper.Map<TagItemViewModel>(tag));
+            }
+
+            return Ok(post);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

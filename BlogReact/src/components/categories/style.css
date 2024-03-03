@@ -1,0 +1,36 @@
+.container {
+  width: 1000px;
+  margin-left: 10%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.containerShort {
+  width: 490px;
+  margin-bottom: 30px;
+}
+
+header {
+  display: flex;
+  background-color: #001529;
+  border-radius: 10px 10px 0px 0px;
+  color: white;
+}
+
+.paragraph{
+  margin: 10px 20px;
+  font-size: 18px;
+  font: "Arial Black", sans-serif;
+}
+
+.categoryContainer {
+  width: 100%;
+}
+
+.postsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

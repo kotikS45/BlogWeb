@@ -1,8 +1,7 @@
 import http_common from "../../http_common";
 import { ICategoryItem } from "../../interfaces/category";
 import { useEffect, useState } from "react";
-import { Card } from 'antd';
-import { Link } from "react-router-dom";
+import CategoryItemCard from "./CategoryItemCard";
 
 const CategoryList: React.FC = () => {
   const [list, setList] = useState<ICategoryItem[]>([]);
@@ -17,15 +16,11 @@ const CategoryList: React.FC = () => {
   }, []);
 
   const content = list.map(x => (
-    <Link key={x.id} to={`/categories/news/${x.urlSlug}`}>
-      <Card key={x.id} title={x.name} bordered={false} style={{ marginTop: '22px', marginLeft: '20%', width: '50%' }}>
-        {x.description}
-      </Card>
-    </Link>
+    <CategoryItemCard {...x}/>
   ));
 
   return (
-    <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
+    <div className="container">
       {content}
     </div>
   );
