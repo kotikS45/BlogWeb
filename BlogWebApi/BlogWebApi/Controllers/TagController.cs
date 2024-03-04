@@ -5,11 +5,14 @@ using BlogWebApi.Models.Category;
 using Microsoft.AspNetCore.Mvc;
 using BlogWebApi.Models.Tag;
 using Microsoft.EntityFrameworkCore;
+using BlogWebApi.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogWebApi.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     public class TagController : ControllerBase
     {
         private readonly AppEFContext _appEFContext;
@@ -22,6 +25,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> List()
         {
             var list = await _appEFContext.Tags
@@ -74,6 +78,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var tag = await _appEFContext.Tags
@@ -87,6 +92,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("urlSlug/{urlSlug}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByUrlSlug(string urlSlug)
         {
             var tag = await _appEFContext.Tags

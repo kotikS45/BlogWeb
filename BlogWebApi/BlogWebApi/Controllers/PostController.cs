@@ -7,11 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using BlogWebApi.Models.Post;
 using BlogWebApi.Models.Tag;
 using Microsoft.Extensions.Hosting;
+using BlogWebApi.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogWebApi.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     public class PostController : ControllerBase
     {
         private readonly AppEFContext _appEFContext;
@@ -24,6 +27,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> List()
         {
             var list = await _appEFContext.Posts
@@ -140,7 +144,8 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("urlSlug/{urlSlug}")]
-        public async Task<IActionResult> GetById(string urlSlug)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetByUrlSlug(string urlSlug)
         {
             var item = await _appEFContext.Posts
                 .Where(c => !c.IsDeleted)
@@ -168,6 +173,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var item = await _appEFContext.Posts
@@ -196,6 +202,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("category/{slugUrl}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByCategory(string slugUrl)
         {
             var category = await _appEFContext.Categories
@@ -230,6 +237,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("tag/{slug}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByTag(string slug)
         {
             var tagFind = await _appEFContext.Tags

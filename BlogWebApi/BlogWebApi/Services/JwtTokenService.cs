@@ -1,4 +1,5 @@
-﻿using BlogWebApi.Data.Entities.Identity;
+﻿using BlogWebApi.Data;
+using BlogWebApi.Data.Entities.Identity;
 using BlogWebApi.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,18 +12,31 @@ namespace BlogWebApi.Services
     public class JwtTokenService : IJwtTokenService
     {
         private readonly IConfiguration _configuration;
-        
-        public JwtTokenService(IConfiguration configuration)
+        private readonly AppEFContext _appEFContext;
+
+        public JwtTokenService(IConfiguration configuration, AppEFContext appEFContext)
         {
             _configuration = configuration;
+            _appEFContext = appEFContext;
         }
 
         public async Task<string> CreateTokenAsync(UserEntity user)
         {
+            var userRoles = _appEFContext.UserRoles.Where(x => x.UserId == user.Id).ToList();
+            var roles = string.Empty;
+
+            foreach (var item in userRoles)
+            {
+                var role = _appEFContext.Roles.Where(x => x.Id == item.RoleId).First();
+                roles += role.Name + ", ";
+            }
+            roles = roles.TrimEnd(',', ' ');
+
             var claims = new List<Claim>
             {
                 new Claim("email", user.Email),
-                new Claim("userName", $"{user.UserName}")
+                new Claim("userName", user.UserName),
+                new Claim("roles", roles)
             };
             var key = Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JwtKey"));
 

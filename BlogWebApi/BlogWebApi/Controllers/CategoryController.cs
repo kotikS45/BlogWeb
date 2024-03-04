@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlogWebApi.Constants;
 using BlogWebApi.Data;
 using BlogWebApi.Data.Entities;
 using BlogWebApi.Models.Category;
@@ -10,6 +11,7 @@ namespace BlogWebApi.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     public class CategoryController : ControllerBase
     {
         private readonly AppEFContext _appEFContext;
@@ -22,6 +24,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> List()
         {
             var list = await _appEFContext.Categories
@@ -74,6 +77,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var category = await _appEFContext.Categories
@@ -87,6 +91,7 @@ namespace BlogWebApi.Controllers
         }
 
         [HttpGet("urlSlug/{urlSlug}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByUrlSlug(string urlSlug)
         {
             var category = await _appEFContext.Categories
