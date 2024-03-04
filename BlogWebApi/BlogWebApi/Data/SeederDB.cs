@@ -1,4 +1,7 @@
-﻿using BlogWebApi.Data.Entities;
+﻿using BlogWebApi.Constants;
+using BlogWebApi.Data.Entities;
+using BlogWebApi.Data.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogWebApi.Data
@@ -12,6 +15,36 @@ namespace BlogWebApi.Data
                 var service = scope.ServiceProvider;
                 var context = service.GetRequiredService<AppEFContext>();
                 context.Database.Migrate();
+
+                var userManager = scope.ServiceProvider
+                    .GetRequiredService<UserManager<UserEntity>>();
+                var roleManager = scope.ServiceProvider
+                    .GetRequiredService<RoleManager<RoleEntity>>();
+
+                if (!context.Roles.Any())
+                {
+                    foreach (var role in Roles.All)
+                    {
+                        var result = roleManager.CreateAsync(new RoleEntity
+                        {
+                            Name = role
+                        }).Result;
+                    }
+                }
+
+                if (!context.Users.Any())
+                {
+                    var user = new UserEntity
+                    {
+                        UserName = "admin",
+                        Email = "admin@gmail.com"
+                    };
+                    var result = userManager.CreateAsync(user, "admin").Result;
+                    if (result.Succeeded)
+                    {
+                        result = userManager.AddToRoleAsync(user, Roles.Admin).Result;
+                    }
+                }
 
                 if (!context.Categories.Any())
                 {
