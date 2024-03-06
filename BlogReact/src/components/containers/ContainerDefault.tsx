@@ -1,33 +1,65 @@
 import React from 'react';
-import { Breadcrumb, Layout, Menu, theme, Card } from 'antd';
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
-import { ITagItem } from '../../interfaces/tag';
 import { useState, useEffect } from 'react';
 import http_common from "../../http_common";
+import ProfileTab from '../profile/PofileTab';
+import { MenuItemType } from "antd/es/menu/hooks/useItems";
+import { useAppSelector } from '../../app/hooks';
+import { IUserLoginInfo } from '../../interfaces/auth';
+import { Button } from 'antd';
+import {useNavigate} from "react-router-dom";
+import Authorize from '../auth/authorize';
+import TagList from '../tags/TagList';
 
 const { Header, Content, Footer } = Layout;
 
 const ContainerDefault: React.FC = () => {
-  const [list, setList] = useState<ITagItem[]>([]);
+  const [user, setUser] = useState<IUserLoginInfo>();
+  const navigator = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    http_common.get<ITagItem[]>("/api/Tag")
-      .then(resp => {
-        const { data } = resp;
-        setList(data);
-      })
-      .catch(error => console.log(error));
+    http_common.get<IUserLoginInfo>("/api/account")
+      .then((resp: { data: IUserLoginInfo }) => {
+        setUser(resp.data);
+      });
   }, []);
+
+  const showModal = () => {
+    setIsModalOpen(true)
+  };
+  
+  const SignOut = () => {
+    localStorage.removeItem('token')
+    setUser(undefined)
+    navigator("/")
+    window.location.reload()
+  }
+
+  const auth = useAppSelector((store: { auth: any; }) => store.auth);
+
+  let items: MenuItemType[] = [];
+  if (auth.isAuth){
+    items.push({
+      key: 1,
+      label: <Button onClick={SignOut}>Sign Out</Button>
+    },
+    {
+      key: 2,
+      label: user ? <ProfileTab {...user} /> : null
+    })
+  }
+  else {
+    items.push({
+      key: 2,
+      label: <Button type="primary" onClick={showModal}>Sign In</Button>
+    });
+  }
 
   const {
     //token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
-  const tags = list.map(x => (
-    <Link key={x.id} to={`/tags/${x.urlSlug}`}>
-      <p>{x.name}</p>
-    </Link>
-  ));
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -38,16 +70,17 @@ const ContainerDefault: React.FC = () => {
           mode="horizontal"
           defaultSelectedKeys={['1']}
           items={[
+            ...items,
             {
-              key: 1,
+              key: 3,
               label: <Link to="/">Home</Link>
             },
             {
-              key: 2,
+              key: 4,
               label: <Link to="/categories">Categories</Link>
             },
             {
-              key: 3,
+              key: 5,
               label: <Link to="/news">News</Link>
             }
             ]}
@@ -60,6 +93,7 @@ const ContainerDefault: React.FC = () => {
           <Breadcrumb.Item>List</Breadcrumb.Item>
         <Breadcrumb.Item>App</Breadcrumb.Item>
         </Breadcrumb>
+        <Authorize isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setUser={setUser}/>
         <div
           style={{
             //background: colorBgContainer,
@@ -70,9 +104,7 @@ const ContainerDefault: React.FC = () => {
             flexDirection: 'row'
           }}
         >
-          <Card title="Tags" bordered={false} style={{ marginTop: '22px', marginLeft: '5%', width: '10%' }}>
-            {tags}
-          </Card>
+          <TagList/>
           <div style={{ width: "90%"}}>
             <Outlet />
           </div>

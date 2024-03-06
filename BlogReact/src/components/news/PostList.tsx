@@ -8,11 +8,11 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     http_common.get<IPostItem[]>("/api/Post")
-      .then(resp => {
+      .then((resp: { data: IPostItem[]; }) => {
         const { data } = resp;
         setList(data);
       })
-      .catch(error => console.log(error));
+      .catch((error: Error) => console.log(error));
   }, []);
 
 const content = list.map(x => <PostItemCard key={x.id} {...x}/>);

@@ -1,24 +1,32 @@
-import './style.css';
-import { ITagEdit, ITagItem } from '../../interfaces/tag';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, Form, Input, Modal, message } from 'antd';
-import { IUserTockenInfo } from '../../interfaces/auth';
-import { jwtDecode } from 'jwt-decode';
-import { useEffect, useState } from 'react';
-import http_common from '../../http_common';
+import http_common from "../../http_common";
+import { useEffect, useState } from "react";
+import { IUserTockenInfo } from "../../interfaces/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { Button, Card, Form, Input, Modal, message } from "antd";
+import { ITagCreate, ITagItem } from "../../interfaces/tag";
 
-const TagItemCard: React.FC<ITagItem> = (props) => {
-  const { id, name, description, urlSlug } = props;
+const TagList: React.FC = () => {
+  const [list, setList] = useState<ITagItem[]>([]);
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigator = useNavigate();
 
-  const descriptionParagraphs = description.split(/\r?\n/);
-
   useEffect(() => {
-    form.setFieldsValue(props);
-  }, [])
+    http_common.get<ITagItem[]>("/api/Tag")
+      .then((resp: { data: ITagItem[] }) => {
+        const { data } = resp;
+        setList(data);
+      })
+      .catch((error: Error) => console.log(error));
+  }, []);
+
+  const tags = list.map(x => (
+    <Link key={x.id} to={`/tags/${x.urlSlug}`}>
+      <p>{x.name}</p>
+    </Link>
+  ));
 
   const isAdmin = () => {
     if (localStorage.token){
@@ -35,7 +43,7 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
     messageApi.open({
       type: 'success',
       duration: 10,
-      content: `Tag ${message} updated`,
+      content: `Category ${message} created`,
     });
   };
   
@@ -51,15 +59,17 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
     });
   };
   
-  const updateCategory = async (tag: ITagEdit) => {
-    tag.id = id;
+  const createCategory = async (tag: ITagCreate) => {
     try {
-      await http_common.put("/api/tag", tag, {
+      await http_common.post("/api/tag", tag, {
         headers: {
-            "Content-Type":"multipart/form-data"
+            "Content-Type": "multipart/form-data"
         }
-      }).finally(() => {
+      })
+      .then(() => {
         success(tag.name);
+      })
+      .finally(() => {
         onClear();
         navigator("/");
       });
@@ -68,7 +78,7 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
     }
   }
 
-  const categoryForm = (
+  const tagForm = (
     <>
     <Form
       form={form}
@@ -87,7 +97,7 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
           {required: true, message: 'This field is required'},
           {min: 2, message: 'Field must have 2 characters minimum'}
         ]}>
-        <Input autoComplete={"name"}/>
+        <Input />
       </Form.Item>
       <Form.Item
         label="Url Slug"
@@ -98,7 +108,7 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
         ]}
         hasFeedback
       >
-        <Input autoComplete={"urlSlug"}/>
+        <Input />
       </Form.Item>
       <Form.Item
         label="Description"
@@ -109,7 +119,7 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
         ]}
         hasFeedback
       >
-        <Input.TextArea autoComplete={"description"}/>
+        <Input.TextArea />
       </Form.Item>
     </Form>
     </>
@@ -119,7 +129,7 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
     form
     .validateFields()
     .then(values => {
-      updateCategory(values)
+      createCategory(values)
       setIsModalOpen(false)
     })
     .catch(errorInfo => {
@@ -130,32 +140,19 @@ const TagItemCard: React.FC<ITagItem> = (props) => {
   const handleCancel = () => {
     setIsModalOpen(false)
   }
-  
+
   return (
-    <div className='containerShort' style={{width: '100%'}}>
-      <Link to={`/tags/${urlSlug}`}>
-        <header>
-          <div>
-            <h2 style={{margin: '10px 15px 10px 15px'}}>{name}</h2>
-          </div>
-          {isAdmin() && <Button style={{width: '60px', margin: '10px 15px 10px 15px', color: 'blue'}} onClick={() => setIsModalOpen(true)}>Edit</Button>}
-        </header>
-      </Link>
-      <div style={{
-        margin: '0',
-        padding: '5px 0px 5px 0px',
-        boxShadow: "inset -2px 0px 10px #001529, inset 2px 0px 10px #001529, inset 0px -2px 10px #001529"
-      }}>
-        {descriptionParagraphs.map((paragraph, index) => (
-          <p key={index} className='paragraph'>{paragraph}</p>
-        ))}
-      </div>
-      <Modal title="Edit tag" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+    <div style={{ marginTop: '22px', marginLeft: '5%', width: '150px' }}>
+      <Card title="Tags" bordered={false} >
+        {isAdmin() && <Button style={{width: '100px', marginBottom: '10px', color: 'blue'}} onClick={() => setIsModalOpen(true)}>+</Button>}
+        {tags}
+      </Card>
+      <Modal title="Create Tag" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         {contextHolder}
-        {categoryForm}
+        {tagForm}
       </Modal>
     </div>
   );
 }
 
-export default TagItemCard;
+export default TagList;

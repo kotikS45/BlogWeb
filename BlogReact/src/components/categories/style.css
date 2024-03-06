@@ -16,6 +16,7 @@ header {
   background-color: #001529;
   border-radius: 10px 10px 0px 0px;
   color: white;
+  justify-content: space-between;
 }
 
 .paragraph{

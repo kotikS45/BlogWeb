@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BlogWebApi.Data;
 using BlogWebApi.Data.Entities;
+using BlogWebApi.Data.Entities.Identity;
+using BlogWebApi.Models.Account;
 using BlogWebApi.Models.Category;
 using BlogWebApi.Models.Post;
 using BlogWebApi.Models.Tag;
@@ -26,6 +28,8 @@ namespace BlogWebApi.Mapper
                 .ForMember(x => x.Tags, opt => opt.Ignore());
             CreateMap<PostEditViewModel, PostEntity>()
                 .ForMember(x => x.Tags, opt => opt.Ignore());
+
+            CreateMap<UserEntity, AccountItemViewModel>();
         }
     }
 }

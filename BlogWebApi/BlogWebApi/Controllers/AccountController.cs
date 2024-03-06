@@ -1,4 +1,5 @@
-﻿using BlogWebApi.Constants;
+﻿using AutoMapper;
+using BlogWebApi.Constants;
 using BlogWebApi.Data.Entities.Identity;
 using BlogWebApi.Helpers;
 using BlogWebApi.Interfaces;
@@ -6,6 +7,7 @@ using BlogWebApi.Models.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BlogWebApi.Controllers
 {
@@ -15,11 +17,13 @@ namespace BlogWebApi.Controllers
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IMapper _mapper;
 
-        public AccountController(UserManager<UserEntity> userManager, IJwtTokenService jwtTokenService)
+        public AccountController(UserManager<UserEntity> userManager, IJwtTokenService jwtTokenService, IMapper mapper)
         {
             _userManager = userManager;
             _jwtTokenService = jwtTokenService;
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -27,9 +31,13 @@ namespace BlogWebApi.Controllers
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
+                var user = await _userManager.FindByNameAsync(model.UserNameOrEmail);
                 if (user == null)
-                    return BadRequest("User not found");
+                {
+                    user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
+                    if (user == null)
+                        return BadRequest("User not found");
+                }
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                     return BadRequest("Incorrect password");
 
@@ -76,23 +84,43 @@ namespace BlogWebApi.Controllers
         {
             try
             {
-                string image = string.Empty;
-                if (!string.IsNullOrEmpty(model.base64))
-                {
-                    image = await ImageWorker.SaveImageAsync(model.base64);
-                }
-
                 string email = User.Claims.FirstOrDefault().Value;
                 var user = await _userManager.FindByEmailAsync(email);
 
-                if (model.base64.Length > 0)
-                    user.Image = image;
-                else
+                if (model.Image != null)
+                {
+                    string fileRemove = Path.Combine(Directory.GetCurrentDirectory(), "images", user.Image);
+                    if (System.IO.File.Exists(fileRemove))
+                        System.IO.File.Delete(fileRemove);
+                    user.Image = await ImageWorker.SaveImageAsync(model.Image);
+                }
+                else 
                     user.Image = null;
 
                 await _userManager.UpdateAsync(user);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> UserInfo()
+        {
+            try
+            {
+                string email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var user = await _userManager.FindByEmailAsync(email);
+
+                if (user == null)
+                    return BadRequest("User not found");
+                var userMapped = _mapper.Map<AccountItemViewModel>(user);
+
+                return Ok(userMapped);
             }
             catch (Exception ex)
             {

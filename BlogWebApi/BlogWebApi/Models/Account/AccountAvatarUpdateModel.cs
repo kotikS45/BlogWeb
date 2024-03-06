@@ -2,6 +2,6 @@
 {
     public class AccountAvatarUpdateModel
     {
-        public string base64 { get; set; }
+        public IFormFile Image { get; set; }
     }
 }
