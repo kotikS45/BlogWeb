@@ -87,6 +87,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\Entities\Identity\TokenEntity.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Account\AccountInfo.cs" />
     <Compile Include="Models\Account\AccountLogin.cs" />
     <Compile Include="Models\Account\AccountRegister.cs" />
@@ -100,11 +103,49 @@
     <Compile Include="Models\Tag\TagCreate.cs" />
     <Compile Include="Models\Tag\TagEdit.cs" />
     <Compile Include="Models\Tag\TagItem.cs" />
+    <Compile Include="Pages\Auth\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Auth\RegistrationPage.xaml.cs">
+      <DependentUpon>RegistrationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Category\CategoriesEditPage.xaml.cs">
+      <DependentUpon>CategoriesEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Category\CategoriesListPage.xaml.cs">
+      <DependentUpon>CategoriesListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Category\CategoryCreatePage.xaml.cs">
+      <DependentUpon>CategoryCreatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Category\CategoryPage.xaml.cs">
+      <DependentUpon>CategoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Post\PostCreatePage.xaml.cs">
+      <DependentUpon>PostCreatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Post\PostEditPage.xaml.cs">
+      <DependentUpon>PostEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Post\PostListPage.xaml.cs">
+      <DependentUpon>PostListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Post\PostPage.xaml.cs">
+      <DependentUpon>PostPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tag\TagCreatePage.xaml.cs">
+      <DependentUpon>TagCreatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tag\TagEditPage.xaml.cs">
+      <DependentUpon>TagEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tag\TagPage.xaml.cs">
+      <DependentUpon>TagPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tag\TagsListPage.xaml.cs">
+      <DependentUpon>TagsListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\TokenManager.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -116,10 +157,66 @@
     <Compile Include="Data\Entities\Identity\UserEntity.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\TagController.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Auth\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Auth\RegistrationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Category\CategoriesEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Category\CategoriesListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Category\CategoryCreatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Category\CategoryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Post\PostCreatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Post\PostEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Post\PostListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Post\PostPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Tag\TagCreatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Tag\TagEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Tag\TagPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Tag\TagsListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

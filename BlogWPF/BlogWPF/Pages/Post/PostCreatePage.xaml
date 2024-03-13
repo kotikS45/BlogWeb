@@ -1,0 +1,36 @@
+﻿<Page x:Class="BlogWPF.Pages.Post.PostCreatePage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BlogWPF.Pages.Post"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PostCreatePage">
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <Border Margin="15" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="40" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock Text="New Post" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10" Style="{StaticResource MaterialDesignTextBlock}"/>
+                <TextBox materialDesign:HintAssist.Hint="Title" Text="{Binding Title}" Name="TitleTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox materialDesign:HintAssist.Hint="Short description" Text="{Binding ShortDescription}" x:Name="ShortDescriptionTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox materialDesign:HintAssist.Hint="Description" Text="{Binding Description}" TextWrapping="Wrap" AcceptsReturn="True" x:Name="DescriptionTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox materialDesign:HintAssist.Hint="Url slug" Text="{Binding UrlSlug}" x:Name="UrlSlugTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox materialDesign:HintAssist.Hint="Meta" Text="{Binding Meta}" x:Name="MetaTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <CheckBox Margin="30 20 0 0" x:Name="Published" IsChecked="{Binding Published}" Content="Published" Style="{StaticResource MaterialDesignCheckBox}"/>
+                <ComboBox Margin="30 30 30 0" ItemsSource="{Binding Categories}" x:Name="CategoriesBox" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding CategoryId}" Style="{StaticResource MaterialDesignComboBox}"/>
+                <ListBox Margin="30" x:Name="TagsBox" ItemsSource="{Binding Tags}" SelectionMode="Multiple">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Content="Create" Margin="10" Width="100" HorizontalAlignment="Center" Click="CreateButton_Click"/>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>

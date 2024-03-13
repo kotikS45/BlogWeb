@@ -1,0 +1,25 @@
+﻿<Page x:Class="BlogWPF.Pages.Category.CategoryCreatePage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BlogWPF.Pages.Category"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CategoryCreatePage">
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <Border MinWidth="500" Margin="15" Background="White" VerticalAlignment="Center" Padding="30" MaxWidth="450" CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="40" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock Text="New Category" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10" Style="{StaticResource MaterialDesignTextBlock}"/>
+                <TextBox materialDesign:HintAssist.Hint="Category name" x:Name="NameTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox materialDesign:HintAssist.Hint="Url slug" x:Name="UrlSlugTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox materialDesign:HintAssist.Hint="Description" TextWrapping="Wrap" AcceptsReturn="True" x:Name="DescriptionTextBox" Margin="20,0,20,10" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <Button Content="Create" Margin="10" Width="100" HorizontalAlignment="Center" Click="CreateButton_Click"/>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+</Page>
