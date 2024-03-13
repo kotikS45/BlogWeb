@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BlogWPF.Models.Post
+{
+    public class PostCreate
+    {
+        public string Title { get; set; }
+        public string ShortDescription { get; set; }
+        public string Description { get; set; }
+        public string Meta { get; set; }
+        public string UrlSlug { get; set; }
+        public virtual bool Published { get; set; }
+        public int CategoryId { get; set; }
+        public List<int> Tags { get; set; }
+    }
+}
