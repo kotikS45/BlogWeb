@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogWPF.Data.Entities.Identity
 {
-    public class UserEntity : BaseEntity<int>
+    [Table("Users")]
+    public class UserEntity
     {
+        public int Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string Image { get; set; }

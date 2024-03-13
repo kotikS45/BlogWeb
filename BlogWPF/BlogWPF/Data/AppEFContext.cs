@@ -5,15 +5,10 @@ namespace BlogWPF.Data
 {
     public class AppEFContext : DbContext
     {
-        public DbSet<TokenEntity> Users { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
 
         public AppEFContext() : base("DefaultConnection")
         {
-        }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

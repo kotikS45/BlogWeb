@@ -30,14 +30,12 @@ namespace BlogWPF.Services
 
         private static void SetToken(byte[] newToken)
         {
-            if (newToken == null || newToken.Length == 0)
-            {
-                throw new InvalidOperationException("Token is not set or is empty.");
-            }
-
             try
             {
-                File.WriteAllBytes(file, newToken);
+                if (newToken == null || newToken.Length == 0)
+                    File.WriteAllBytes(file, new byte[0]);
+                else
+                    File.WriteAllBytes(file, newToken);
                 token = newToken;
             }
             catch (Exception ex)

@@ -4,6 +4,7 @@ using BlogWPF.Models.Account;
 using BlogWPF.Services;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +15,12 @@ namespace BlogWPF.Controllers
     public static class AccountController
     {
         private static readonly HttpClient _httpClient;
+        private static readonly AppEFContext _appEFContext;
 
         static AccountController()
         {
             _httpClient = new HttpClient();
+            _appEFContext = new AppEFContext();
             _httpClient.BaseAddress = new Uri("http://localhost:5078/api/account/");
         }
 
@@ -34,6 +37,12 @@ namespace BlogWPF.Controllers
                 {
                     string token = JsonConvert.DeserializeObject<AccountResponce>(await response.Content.ReadAsStringAsync()).Token;
                     var user = await GetUserByTokenAsync(token);
+
+                    //var data = _appEFContext.Users.ToList();
+                    //if (data.Count() > 0)
+                    //    _appEFContext.Users.RemoveRange(data);
+                    //_appEFContext.Users.Add(user);
+                    //_appEFContext.SaveChanges();
 
                     TokenManager.Token = Encoding.UTF8.GetBytes(token);
                 }
@@ -91,7 +100,6 @@ namespace BlogWPF.Controllers
                 {
                     Username = info.Username,
                     Email = info.Email,
-                    DateCreated = DateTime.Now,
                     Image = info.Image,
                     Token = token,
                     Roles = string.Join(",", info.Roles)

@@ -35,6 +35,11 @@ namespace BlogWPF
             NavigateToLoginPage();
         }
 
+        private void LogOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            TokenManager.Token = null;
+        }
+
         private void RegistrationPageButton_Click(object sender, RoutedEventArgs e)
         {
             NavigateToRegistrationPage();
