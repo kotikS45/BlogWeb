@@ -27,9 +27,14 @@ namespace BlogWPF.Pages.Auth
     /// </summary>
     public partial class RegistrationPage : Page
     {
-        public RegistrationPage()
+        private Frame frame;
+        private Action action;
+
+        public RegistrationPage(Frame frame, Action action)
         {
             InitializeComponent();
+            this.action = action;
+            this.frame = frame;
         }
 
         private async void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -37,24 +42,17 @@ namespace BlogWPF.Pages.Auth
             var registerModel = new AccountRegister { Username = UsernameTextBox.Text, Email = EmailTextBox.Text, Password = PasswordBox.Password };
             await AccountController.RegistrationAsync(registerModel);
             ToPosts();
+            action();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(new LoginPage());
-            }
+            frame.Navigate(new LoginPage(frame, action));
         }
 
         private void ToPosts()
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(new PostListPage());
-            }
+            frame.Navigate(new PostListPage(frame));
         }
     }
 }

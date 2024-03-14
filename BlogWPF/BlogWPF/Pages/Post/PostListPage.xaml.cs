@@ -25,19 +25,18 @@ namespace BlogWPF.Pages.Post
     /// </summary>
     public partial class PostListPage : Page
     {
-        public PostListPage()
+        private Frame frame;
+
+        public PostListPage(Frame frame)
         {
             InitializeComponent();
             LoadPosts();
+            this.frame = frame;
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(new PostCreatePage());
-            }
+            frame.Navigate(new PostCreatePage(frame));
         }
 
         private async void LoadPosts()
@@ -53,11 +52,7 @@ namespace BlogWPF.Pages.Post
             {
                 PostItem selectedPost = (PostItem)PostListView.SelectedItem;
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new PostPage(selectedPost.Id));
-                }
+                frame.Navigate(new PostPage(frame, selectedPost.Id));
             }
         }
     }

@@ -24,12 +24,15 @@ namespace BlogWPF.Pages.Tag
     /// </summary>
     public partial class TagEditPage : Page
     {
+        private Frame frame;
         public TagEdit Tag { get; set; }
-        public TagEditPage(int id)
+
+        public TagEditPage(Frame frame, int id)
         {
             InitializeComponent();
             Tag = new TagEdit();
             LoadTagAsync(id);
+            this.frame = frame;
         }
 
         private async void LoadTagAsync(int id)
@@ -54,15 +57,7 @@ namespace BlogWPF.Pages.Tag
             {
                 MessageBox.Show("Tag updated successfully!");
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new TagsListPage());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Failed update tag");
+                frame.Navigate(new TagsListPage(frame));
             }
         }
     }

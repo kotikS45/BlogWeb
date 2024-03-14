@@ -23,7 +23,7 @@ namespace BlogWPF.Controllers
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("http://localhost:5078/api/post/");
 
-            var token = Convert.ToBase64String(TokenManager.Token);
+            var token = Encoding.UTF8.GetString(TokenManager.Token);
             if (token != null && token.Length != 0)
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
@@ -32,7 +32,6 @@ namespace BlogWPF.Controllers
         {
             try
             {
-
                 var response = await _httpClient.GetAsync("");
 
                 if (response.IsSuccessStatusCode)

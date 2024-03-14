@@ -10,11 +10,13 @@ namespace BlogWPF.Pages.Auth
 {
     public partial class CategoriesListPage : Page
     {
+        private Frame frame;
 
-        public CategoriesListPage()
+        public CategoriesListPage(Frame frame)
         {
             InitializeComponent();
             LoadCategories();
+            this.frame = frame;
         }
 
         private async void LoadCategories()
@@ -29,21 +31,13 @@ namespace BlogWPF.Pages.Auth
             {
                 CategoryItem selectedCategory = (CategoryItem)CategoryListView.SelectedItem;
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new CategoryPage(selectedCategory.Id));
-                }
+                frame.Navigate(new CategoryPage(frame, selectedCategory.Id));
             }
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(new CategoryCreatePage());
-            }
+            frame.Navigate(new CategoryCreatePage(frame));
         }
     }
 }

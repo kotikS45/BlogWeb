@@ -24,15 +24,18 @@ namespace BlogWPF.Pages.Post
     /// </summary>
     public partial class PostEditPage : Page
     {
+        private Frame frame;
         private PostItem postItem { get; set; }
         public PostEdit Post { get; set; } = new PostEdit();
         public List<CategoryItem> Categories { get; set; }
         public List<TagItem> Tags { get; set; }
-        public PostEditPage(int id)
+
+        public PostEditPage(Frame frame, int id)
         {
             InitializeComponent();
             LoadPost(id);
             DataContext = Post;
+            this.frame = frame;
         }
 
         private async void LoadPost(int id)
@@ -103,15 +106,7 @@ namespace BlogWPF.Pages.Post
             {
                 MessageBox.Show("Post updated successfully!");
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new PostListPage());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Failed update post");
+                frame.Navigate(new PostListPage(frame));
             }
         }
 

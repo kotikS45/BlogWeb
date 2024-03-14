@@ -1,8 +1,10 @@
 ﻿using BlogWPF.Controllers;
 using BlogWPF.Models.Category;
+using BlogWPF.Models.Post;
 using BlogWPF.Models.Tag;
 using BlogWPF.Pages.Auth;
 using BlogWPF.Pages.Category;
+using BlogWPF.Pages.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +27,15 @@ namespace BlogWPF.Pages.Tag
     /// </summary>
     public partial class TagPage : Page
     {
+        private Frame frame;
         public TagItem TagItem { get; set; }
 
-        public TagPage(int id = 1)
+        public TagPage(Frame frame, int id = 1)
         {
             InitializeComponent();
             LoadTagAsync(id);
+            LoadPosts();
+            this.frame = frame;
         }
 
         private async void LoadTagAsync(int id)
@@ -42,8 +47,7 @@ namespace BlogWPF.Pages.Tag
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            navigationService.Navigate(new TagEditPage(TagItem.Id));
+            frame.Navigate(new TagEditPage(frame, TagItem.Id));
         }
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -52,8 +56,24 @@ namespace BlogWPF.Pages.Tag
 
             if (result)
             {
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                navigationService.Navigate(new TagsListPage());
+                frame.Navigate(new TagsListPage(frame));
+            }
+        }
+
+        private async void LoadPosts()
+        {
+            List<PostItem> posts = await PostController.GetPostListAsync();
+
+            PostListView.ItemsSource = posts;
+        }
+
+        private void PostListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PostListView.SelectedItem != null)
+            {
+                PostItem selectedPost = (PostItem)PostListView.SelectedItem;
+
+                frame.Navigate(new PostPage(frame, selectedPost.Id));
             }
         }
     }

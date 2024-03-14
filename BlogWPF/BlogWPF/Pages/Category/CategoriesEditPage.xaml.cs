@@ -23,12 +23,14 @@ namespace BlogWPF.Pages.Category
     /// </summary>
     public partial class CategoriesEditPage : Page
     {
+        private Frame frame;
         public CategoryEdit Category { get; set; }
-        public CategoriesEditPage(int id)
+        public CategoriesEditPage(Frame frame, int id)
         {
             InitializeComponent();
             Category = new CategoryEdit();
             LoadCategoryAsync(id);
+            this.frame = frame;
         }
 
         private async void LoadCategoryAsync(int id)
@@ -51,15 +53,7 @@ namespace BlogWPF.Pages.Category
             var result = await CategoryController.UpdateCategory(Category);
             if (result)
             {
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new CategoriesListPage());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Failed update category");
+                frame.Navigate(new CategoriesListPage(frame));
             }
         }
     }

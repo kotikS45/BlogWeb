@@ -25,15 +25,18 @@ namespace BlogWPF.Pages.Post
     /// </summary>
     public partial class PostCreatePage : Page
     {
+        private Frame frame;
         public PostCreate Post { get; set; } = new PostCreate() { Tags = new List<int>() };
         public List<CategoryItem> Categories { get; set; }
         public List<TagItem> Tags { get; set; }
-        public PostCreatePage()
+
+        public PostCreatePage(Frame frame)
         {
             InitializeComponent();
             LoadCategories();
             LoadTags();
             DataContext = Post;
+            this.frame = frame;
         }
 
         private async void LoadCategories()
@@ -55,15 +58,7 @@ namespace BlogWPF.Pages.Post
             {
                 MessageBox.Show("Post created successfully!");
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new PostListPage());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Failed create post");
+                frame.Navigate(new PostListPage(frame));
             }
         }
 

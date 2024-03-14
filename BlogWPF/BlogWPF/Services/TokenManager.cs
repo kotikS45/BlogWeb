@@ -51,6 +51,8 @@ namespace BlogWPF.Services
 
         private static byte[] GetCopy(byte[] source)
         {
+            if (source == null)
+                return null;
             var result = new byte[source.Length];
             Array.Copy(source, result, source.Length);
             return result;

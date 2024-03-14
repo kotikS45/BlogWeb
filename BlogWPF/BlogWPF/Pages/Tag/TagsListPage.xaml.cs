@@ -24,10 +24,13 @@ namespace BlogWPF.Pages.Tag
     /// </summary>
     public partial class TagsListPage : Page
     {
-        public TagsListPage()
+        private Frame frame;
+
+        public TagsListPage(Frame frame)
         {
             InitializeComponent();
             LoadCategories();
+            this.frame = frame;
         }
 
         private async void LoadCategories()
@@ -42,21 +45,13 @@ namespace BlogWPF.Pages.Tag
             {
                 TagItem selectedTag = (TagItem)TagListView.SelectedItem;
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new TagPage(selectedTag.Id));
-                }
+                frame.Navigate(new TagPage(frame, selectedTag.Id));
             }
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(new TagCreatePage());
-            }
+            frame.Navigate(new TagCreatePage(frame));
         }
     }
 }

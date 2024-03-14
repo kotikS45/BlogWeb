@@ -24,9 +24,12 @@ namespace BlogWPF.Pages.Tag
     /// </summary>
     public partial class TagCreatePage : Page
     {
-        public TagCreatePage()
+        private Frame frame;
+
+        public TagCreatePage(Frame frame)
         {
             InitializeComponent();
+            this.frame = frame;
         }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -47,15 +50,7 @@ namespace BlogWPF.Pages.Tag
             {
                 MessageBox.Show("Tag created successfully!");
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new TagsListPage());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Failed create tag");
+                frame.Navigate(new TagsListPage(frame));
             }
         }
     }

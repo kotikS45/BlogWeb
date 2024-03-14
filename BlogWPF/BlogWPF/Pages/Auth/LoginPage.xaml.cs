@@ -20,11 +20,15 @@ namespace BlogWPF.Pages.Auth
     /// </summary>
     public partial class LoginPage : Page
     {
-        public LoginPage()
+        private Frame frame;
+        private Action action;
+        public LoginPage(Frame frame, Action action)
         {
             InitializeComponent();
             UsernameTextBox.Text = "admin";
             PasswordBox.Password = "admin";
+            this.action = action;
+            this.frame = frame;
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -32,24 +36,17 @@ namespace BlogWPF.Pages.Auth
             var loginViewModel = new AccountLogin { UserNameOrEmail = UsernameTextBox.Text, Password = PasswordBox.Password };
             await AccountController.LoginAsync(loginViewModel);
             ToPosts();
+            action();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(new RegistrationPage());
-            }
+            frame.Navigate(new RegistrationPage(frame, action));
         }
 
         private void ToPosts()
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(new PostListPage());
-            }
+            frame.Navigate(new PostListPage(frame));
         }
     }
 }

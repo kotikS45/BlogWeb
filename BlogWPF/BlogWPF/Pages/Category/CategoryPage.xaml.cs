@@ -25,13 +25,15 @@ namespace BlogWPF.Pages.Category
     /// </summary>
     public partial class CategoryPage : Page
     {
+        private Frame frame;
         public CategoryItem Category { get; set; }
 
-        public CategoryPage(int id = 1)
+        public CategoryPage(Frame frame, int id = 1)
         {
             InitializeComponent();
             LoadCategoryAsync(id);
             LoadPosts();
+            this.frame = frame;
         }
 
         private async void LoadCategoryAsync(int id)
@@ -43,8 +45,7 @@ namespace BlogWPF.Pages.Category
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            navigationService.Navigate(new CategoriesEditPage(Category.Id));
+            frame.Navigate(new CategoriesEditPage(frame, Category.Id));
         }
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -53,8 +54,7 @@ namespace BlogWPF.Pages.Category
 
             if (result)
             {
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                navigationService.Navigate(new CategoriesListPage());
+                frame.Navigate(new CategoriesListPage(frame));
             }
         }
 
@@ -71,11 +71,7 @@ namespace BlogWPF.Pages.Category
             {
                 PostItem selectedPost = (PostItem)PostListView.SelectedItem;
 
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new PostPage(selectedPost.Id));
-                }
+                frame.Navigate(new PostPage(frame, selectedPost.Id));
             }
         }
     }

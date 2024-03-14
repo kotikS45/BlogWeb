@@ -46,55 +46,109 @@
         </Style>
     </Page.Resources>
 
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Border MinWidth="400" Background="White" VerticalAlignment="Center" CornerRadius="10">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="40" Color="LightGray" ShadowDepth="0"/>
-            </Border.Effect>
-            <StackPanel>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border CornerRadius="10 10 0 0">
-                        <Border.Background>
-                            <SolidColorBrush Color="{DynamicResource Primary700}"/>
-                        </Border.Background>
-                        <TextBlock Foreground="White" Margin="20 10 20 10" Grid.Column="0" Grid.Row="0" Text="{Binding TagItem.Name}" FontWeight="Bold" FontSize="20"/>
-                    </Border>
-                    <TextBlock Margin="10" Grid.Column="0" Grid.Row="1" Text="{Binding TagItem.Description}" TextWrapping="Wrap" FontSize="16"/>
-                    <WrapPanel Grid.Row="2" HorizontalAlignment="Right">
-                        <Button Content="Edit" Click="EditButton_Click" Margin="0 0 1 0">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10,0,0,0" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border MinWidth="400" Background="White" VerticalAlignment="Center" CornerRadius="10">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="40" Color="LightGray" ShadowDepth="0"/>
+                </Border.Effect>
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border CornerRadius="10 10 0 0">
+                            <Border.Background>
+                                <SolidColorBrush Color="{DynamicResource Primary700}"/>
+                            </Border.Background>
+                            <TextBlock Foreground="White" Margin="20 10 20 10" Grid.Column="0" Grid.Row="0" Text="{Binding TagItem.Name}" FontWeight="Bold" FontSize="20"/>
+                        </Border>
+                        <TextBlock Margin="10" Grid.Column="0" Grid.Row="1" Text="{Binding TagItem.Description}" TextWrapping="Wrap" FontSize="16"/>
+                        <WrapPanel Grid.Row="2" HorizontalAlignment="Right">
+                            <Button Content="Edit" Click="EditButton_Click" Margin="0 0 1 0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10,0,0,0" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
 
-                        <Button Content="Delete" Click="DeleteButton_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,0,10,0" Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Button Content="Delete" Click="DeleteButton_Click">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,0,10,0" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </WrapPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <ListView Name="PostListView" Margin="10" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="PostListView_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border MinWidth="400" Background="White" VerticalAlignment="Center" CornerRadius="10">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="40" Color="LightGray" ShadowDepth="0"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border CornerRadius="10 10 0 0">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{DynamicResource Primary700}"/>
+                                        </Border.Background>
+                                        <TextBlock Foreground="White" Margin="20 10 20 10" Grid.Column="0" Grid.Row="0" Text="{Binding Title}" FontWeight="Bold" FontSize="20"/>
                                     </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </WrapPanel>
-                </Grid>
-            </StackPanel>
-        </Border>
-    </Grid>
+                                    <TextBlock Margin="10" Grid.Column="0" Grid.Row="1" Text="{Binding ShortDescription}" TextWrapping="Wrap" FontSize="16"/>
+                                    <WrapPanel Grid.Row="2" HorizontalAlignment="Right">
+                                        <Button Content="{Binding PostedOn}">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10,0,10,0" Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </WrapPanel>
+                                    <WrapPanel Grid.Row="2" HorizontalAlignment="Left">
+                                        <Button Content="{Binding Category.Name}">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,10,0,10" Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </WrapPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ScrollViewer>
 </Page>

@@ -24,12 +24,14 @@ namespace BlogWPF.Pages.Post
     /// </summary>
     public partial class PostPage : Page
     {
+        private Frame frame;
         public PostItem PostItem { get; set; }
 
-        public PostPage(int id = 1)
+        public PostPage(Frame frame, int id = 1)
         {
             InitializeComponent();
             LoadPostAsync(id);
+            this.frame = frame;
         }
 
         private async void LoadPostAsync(int id)
@@ -86,8 +88,7 @@ namespace BlogWPF.Pages.Post
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            navigationService.Navigate(new PostEditPage(PostItem.Id));
+            frame.Navigate(new PostEditPage(frame, PostItem.Id));
         }
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -96,8 +97,7 @@ namespace BlogWPF.Pages.Post
 
             if (result)
             {
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                navigationService.Navigate(new PostListPage());
+                frame.Navigate(new PostListPage(frame));
             }
         }
     }

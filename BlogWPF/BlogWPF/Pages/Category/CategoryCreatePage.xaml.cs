@@ -23,9 +23,12 @@ namespace BlogWPF.Pages.Category
     /// </summary>
     public partial class CategoryCreatePage : Page
     {
-        public CategoryCreatePage()
+        private Frame frame;
+
+        public CategoryCreatePage(Frame frame)
         {
             InitializeComponent();
+            this.frame = frame;
         }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -44,15 +47,7 @@ namespace BlogWPF.Pages.Category
             var result = await CategoryController.CreateCategory(category);
             if (result)
             {
-                NavigationService navigationService = NavigationService.GetNavigationService(this);
-                if (navigationService != null)
-                {
-                    navigationService.Navigate(new CategoriesListPage());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Failed create category");
+                frame.Navigate(new CategoriesListPage(frame));
             }
         }
     }
