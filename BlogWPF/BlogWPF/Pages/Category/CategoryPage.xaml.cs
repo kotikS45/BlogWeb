@@ -31,16 +31,16 @@ namespace BlogWPF.Pages.Category
         public CategoryPage(Frame frame, int id = 1)
         {
             InitializeComponent();
-            LoadCategoryAsync(id);
-            LoadPosts();
+            LoadContent(id);
             this.frame = frame;
         }
 
-        private async void LoadCategoryAsync(int id)
+        private async void LoadContent(int id)
         {
             var item = await CategoryController.GetById(id);
             Category = item;
             DataContext = this;
+            LoadPosts();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ namespace BlogWPF.Pages.Category
 
         private async void LoadPosts()
         {
-            List<PostItem> posts = await PostController.GetPostListAsync();
+            List<PostItem> posts = await PostController.GetPostListByCategoryAsync(Category.UrlSlug);
 
             PostListView.ItemsSource = posts;
         }

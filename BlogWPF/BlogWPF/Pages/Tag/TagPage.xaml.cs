@@ -33,16 +33,16 @@ namespace BlogWPF.Pages.Tag
         public TagPage(Frame frame, int id = 1)
         {
             InitializeComponent();
-            LoadTagAsync(id);
-            LoadPosts();
+            LoadContent(id);
             this.frame = frame;
         }
 
-        private async void LoadTagAsync(int id)
+        private async void LoadContent(int id)
         {
             var item = await TagController.GetById(id);
             TagItem = item;
             DataContext = this;
+            LoadPosts();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -62,7 +62,7 @@ namespace BlogWPF.Pages.Tag
 
         private async void LoadPosts()
         {
-            List<PostItem> posts = await PostController.GetPostListAsync();
+            List<PostItem> posts = await PostController.GetPostListByTagAsync(TagItem.UrlSlug);
 
             PostListView.ItemsSource = posts;
         }

@@ -56,6 +56,62 @@ namespace BlogWPF.Controllers
             }
         }
 
+        public static async Task<List<PostItem>> GetPostListByCategoryAsync(string urlSlug)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"category/{urlSlug}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var info = JsonConvert.DeserializeObject<List<PostItem>>(content);
+
+                    return info;
+                }
+                else
+                {
+                    MessageBox.Show($"Error fetching post info: {response.StatusCode}");
+                    return null;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
+        public static async Task<List<PostItem>> GetPostListByTagAsync(string urlSlug)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"tag/{urlSlug}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var info = JsonConvert.DeserializeObject<List<PostItem>>(content);
+
+                    return info;
+                }
+                else
+                {
+                    MessageBox.Show($"Error fetching post info: {response.StatusCode}");
+                    return null;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
         public static HttpContent ConvertToFormData(PostCreate post)
         {
             var formData = new MultipartFormDataContent();
